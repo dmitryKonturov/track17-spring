@@ -4,9 +4,15 @@ import java.util.NoSuchElementException;
 
 import static java.lang.System.arraycopy;
 
+
 /**
  * Должен наследовать List
+ *
+ * Должен иметь 2 конструктора
+ * - без аргументов - создает внутренний массив дефолтного размера на ваш выбор
+ * - с аргументом - начальный размер массива
  */
+
 public class MyArrayList extends List {
 
     private int[] array;
@@ -18,8 +24,14 @@ public class MyArrayList extends List {
         size = 0;
     }
 
+    public MyArrayList(int capacity) {
+        this.capacity = capacity;
+        array = new int[capacity];
+        size = 0;
+    }
+
     @Override
-    void add(int item) {
+    public void add(int item) {
         if (size == capacity) {
             doReallocation();
         }

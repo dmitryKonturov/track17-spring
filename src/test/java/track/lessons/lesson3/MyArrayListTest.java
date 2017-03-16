@@ -3,13 +3,36 @@ package track.lessons.lesson3;
 import java.util.NoSuchElementException;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  *
  */
 public class MyArrayListTest {
+
+    @Test
+    public void testResize1() {
+        MyArrayList list = new MyArrayList(0);
+        for (int i = 0; i < 1000; i++) {
+            list.add(i);
+        }
+
+        Assert.assertTrue(list.size() == 1000);
+    }
+
+    @Test
+    public void testResize2() {
+        MyArrayList list = new MyArrayList(0);
+        for (int i = 0; i < 100; i++) {
+            list.add(i);
+        }
+
+        for (int i = 0; i < 100; i++) {
+            list.remove(0);
+        }
+        Assert.assertTrue(list.size() == 0);
+
+    }
 
 
     @Test(expected = NoSuchElementException.class)
