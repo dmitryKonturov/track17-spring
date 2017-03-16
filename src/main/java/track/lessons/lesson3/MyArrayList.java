@@ -17,17 +17,18 @@ public class MyArrayList extends List {
 
     private int[] array;
     private int size;
-    private int capacity = 8;
+    private int capacity;
+    private static int MIN_CAPACITY_AFTER_REALLOCATION = 8;
 
-    public MyArrayList() {
-        array = new int[capacity];
-        size = 0;
-    }
 
     public MyArrayList(int capacity) {
         this.capacity = capacity;
         array = new int[capacity];
         size = 0;
+    }
+
+    public MyArrayList() {
+        this(0);
     }
 
     @Override
@@ -39,10 +40,11 @@ public class MyArrayList extends List {
     }
 
     private void doReallocation() {
-        int[] newArray = new int[2 * capacity];
+        int newCapacity = capacity == 0 ? MIN_CAPACITY_AFTER_REALLOCATION : 2 * capacity;
+        int[] newArray = new int[newCapacity];
         arraycopy(array, 0, newArray, 0, capacity);
         array = newArray;
-        capacity *= 2;
+        capacity = newCapacity;
     }
 
     @Override
