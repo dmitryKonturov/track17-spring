@@ -6,7 +6,32 @@ import java.util.NoSuchElementException;
  * Должен наследовать List
  * Односвязный список
  */
-public class MyLinkedList extends List {
+public class MyLinkedList extends List implements Stack, Queue {
+
+    @Override
+    public void enqueue(int value) {
+        add(value);
+    }
+
+    @Override
+    public int dequeue() {
+        return remove(0);
+    }
+
+    @Override
+    public void push(int value) {
+        add(value);
+    }
+
+    @Override
+    public int pop() {
+        return remove(size - 1);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
     /**
      * private - используется для сокрытия этого класса от других.
@@ -27,55 +52,58 @@ public class MyLinkedList extends List {
     }
 
     private Node head;
+    private Node tail;
     private int size;
 
+    public MyLinkedList() { }
 
-    public MyLinkedList() {
-        head = null;
-        size = 0;
-    }
-
-    @Override
-    void add(int item) {
-        Node toAdd = new Node(null, head, item);
-        if (head != null) {
-            head.prev = toAdd;
-        }
-        ++size;
-        head = toAdd;
-    }
-
-    private Node getNodeByIndex(int idxFromEnd) throws NoSuchElementException {
-        if (idxFromEnd < 0 || idxFromEnd >= size) {
+    private Node getNodeByIndex(int idx) throws NoSuchElementException {
+        if (idx < 0 || idx >= size) {
             throw new NoSuchElementException();
         }
         Node current = head;
-        while (idxFromEnd-- > 0) {
+        while (idx-- > 0) {
             current = current.next;
         }
         return current;
     }
 
     @Override
+    int get(int idx) throws NoSuchElementException {
+        Node toReturn = getNodeByIndex(idx);
+        return toReturn.val;
+    }
+
+    @Override
     int remove(int idx) throws NoSuchElementException {
-        Node toDelete = getNodeByIndex(size - idx);
-        if (head == toDelete) {
-            head = head.next;
-        }
+        Node toDelete = getNodeByIndex(idx);
         if (toDelete.next != null) {
             toDelete.next.prev = toDelete.prev;
         }
         if (toDelete.prev != null) {
             toDelete.prev.next = toDelete.next;
         }
+        if (toDelete == head) {
+            head = head.next;
+        }
+        if (toDelete == tail) {
+            tail = tail.prev;
+        }
         --size;
         return toDelete.val;
     }
 
     @Override
-    int get(int idx) throws NoSuchElementException {
-        Node result = getNodeByIndex(size - idx);
-        return result.val;
+    void add(int item) {
+        ++size;
+        Node newNode = new Node(tail, null, item);
+        if (tail != null) {
+            tail.next = newNode;
+        }
+        if (head == null) {
+            head = newNode;
+        }
+        tail = newNode;
     }
 
     @Override

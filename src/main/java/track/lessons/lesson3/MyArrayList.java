@@ -23,7 +23,7 @@ public class MyArrayList extends List {
         if (size == capacity) {
             doReallocation();
         }
-        array[++size] = item;
+        array[size++] = item;
     }
 
     private void doReallocation() {
